@@ -11,12 +11,12 @@ class BaseDatos {
 
     static getInstancia() {
         if(this.#instancia) {
-            console.log("Conexion previa");
+            console.log("Conexión previa");
             return this.#instancia;
         }
 
         this.#instancia = new BaseDatos();
-        console.log("Conexión exitosa!!");
+        console.log("Conexión exitosa a Atlas.com");
         return this.#instancia;
     }
 }
