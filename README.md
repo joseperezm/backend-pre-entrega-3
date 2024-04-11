@@ -1,14 +1,48 @@
-# Reestructura de nuestro servidor
-## Consigna
-- Con base en las clases previamente vistas, realizar los cambios necesarios en tu proyecto para que se base en un modelo de capas.
-### Aspectos a incluir
-- El proyecto debe contar con capas de routing, controlador, dao, con nuestras vistas bien separadas y con las responsabilidades correctamente delegadas.
-- Mover del proyecto todas las partes importantes y comprometedoras en un archivo .env para poder leerlo bajo variables de entorno en un archivo config.js
-## Proceso de testing
-- npm start ejecuta el entorno de producción.
-- npm run dev ejecuta el entorno de desarrollo.
-- Se revisará que la estructura del proyecto cuente con diferentes capas separadas como: routes, controllers, dao, config, etc.
-- Se revisará que el archivo .env proporcionado por el alumno, cuente por lo menos con una variable de entorno de MONGO_URL para la conexión a la base de datos, así también como las variables ADMIN_EMAIL y ADMIN_PASSWORD para poder hacer el login de manera efectiva como admin.
-- Se registrará un nuevo usuario, corroborar que se guarde en la base de datos que se encuentre en MONGO_URL
-- Se logueará como superadmin, revisando que el superadmin sí coincida con las variables de entorno ADMIN_EMAIL y ADMIN_PASSWORD
-- Es obligatorio pasar adjunto el archivo .env fuera del repositorio
+# Tercera pre entrega
+# Mejorando la arquitectura del servidor
+
+## Objetivos generales
+- Profesionalizar el servidor
+
+## Objetivos específicos
+- Aplicar una arquitectura profesional para nuestro servidor.
+- Aplicar prácticas como patrones de diseño, mailing, variables de entorno, etc.
+
+## Entregables
+
+### Modificación de la capa de persistencia
+- Modificar nuestra capa de persistencia para aplicar los conceptos de Factory (opcional), DAO y DTO.
+
+### Implementación de Factory y DAO
+- El DAO seleccionado (por un parámetro en línea de comandos como lo hicimos anteriormente) será devuelto por una Factory para que la capa de negocio opere con él. (Factory puede ser opcional).
+
+### Patrón Repository
+- Implementar el patrón Repository para trabajar con el DAO en la lógica de negocio.
+
+### Modificación de la ruta /current
+- Para evitar enviar información sensible, enviar un DTO del usuario sólo con la información necesaria.
+
+### Middleware para sistema de autorización
+- Realizar un middleware que pueda trabajar en conjunto con la estrategia "current" para hacer un sistema de autorización y delimitar el acceso a dichos endpoints:
+  - Sólo el administrador puede crear, actualizar y eliminar productos.
+  - Sólo el usuario puede enviar mensajes al chat.
+  - Sólo el usuario puede agregar productos a su carrito.
+
+### Modelo Ticket
+- Crear un modelo Ticket el cual contará con todas las formalizaciones de la compra. Este contará con los campos:
+  - Id (autogenerado por mongo)
+  - code: String debe autogenerarse y ser único
+  - purchase_datetime: Deberá guardar la fecha y hora exacta en la cual se formalizó la compra (básicamente es un created_at)
+  - amount: Number, total de la compra.
+  - purchaser: String, contendrá el correo del usuario asociado al carrito.
+
+### Ruta de compra en el router de carts
+- Implementar, en el router de carts, la ruta `/:cid/purchase`, la cual permitirá finalizar el proceso de compra de dicho carrito.
+  - La compra debe corroborar el stock del producto al momento de finalizarse.
+  - Si el producto tiene suficiente stock para la cantidad indicada en el producto del carrito, entonces restarlo del stock del producto y continuar.
+  - Si el producto no tiene suficiente stock para la cantidad indicada en el producto del carrito, entonces no agregar el producto al proceso de compra.
+
+### Servicio de Tickets
+- Al final, utilizar el servicio de Tickets para poder generar un ticket con los datos de la compra.
+- En caso de existir una compra no completada, devolver el arreglo con los ids de los productos que no pudieron procesarse.
+- Una vez finalizada la compra, el carrito asociado al usuario que compró deberá contener sólo los productos que no pudieron comprarse. Es decir, se filtran los que sí se compraron y se quedan aquellos que no tenían disponibilidad.
