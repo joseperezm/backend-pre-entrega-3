@@ -63,8 +63,66 @@
 - Persistencia: El proyecto cuenta con DAO de archivos y DAO de MongoDB	
 - Seguridad: Los endpoints se encuentran protegidos por roles	
 - Proceso de compra: 
-- - El carrito sólo compra los productos en stock
-- - El ticket se genera con los datos de compra
+  - El carrito sólo compra los productos en stock
+  - El ticket se genera con los datos de compra
 - Seguridad:
-- - Envía correos.
-- - Envía SMS
+  - Envía correos.
+  - Envía SMS
+
+# Testeos
+#
+### Recuerda reemplazar :id, :cid, y :pid con los identificadores apropiados cuando utilices estas URLs.
+
+### URLs de Prueba para API de Productos
+
+- [Listar todos los productos](http://localhost:8080/api/products) - `http://localhost:8080/api/products` - Método: `GET`.
+- [Obtener un producto por ID](http://localhost:8080/api/products/:id) - `http://localhost:8080/api/products/:id` - Método: `GET`.
+- [Agregar un nuevo producto](http://localhost:8080/api/products) - `http://localhost:8080/api/products` - Método: `POST`.
+- [Actualizar un producto por ID](http://localhost:8080/api/products/:id) - `http://localhost:8080/api/products/:id` - Método: `PUT`.
+- [Eliminar un producto por ID](http://localhost:8080/api/products/:id) - `http://localhost:8080/api/products/:id` - Método: `DELETE`.
+- [Primera Página (default limit 10)](http://localhost:8080/api/products/?page=1) - `http://localhost:8080/api/products/?page=1` - Método: `GET`.
+- [Segunda Página (default limit 10)](http://localhost:8080/api/products/?page=2) - `http://localhost:8080/api/products/?page=2` - Método: `GET`.
+- [Limitar a 5 Productos](http://localhost:8080/api/products/?limit=5) - `http://localhost:8080/api/products/?limit=5` - Método: `GET`.
+- [Limitar a 20 Productos](http://localhost:8080/api/products/?limit=20) - `http://localhost:8080/api/products/?limit=20` - Método: `GET`.
+- [Orden Ascendente por Precio](http://localhost:8080/api/products/?sort=asc) - `http://localhost:8080/api/products/?sort=asc` - Método: `GET`.
+- [Orden Descendente por Precio](http://localhost:8080/api/products/?sort=desc) - `http://localhost:8080/api/products/?sort=desc` - Método: `GET`.
+- [Buscar "impresora" (Ejemplo de query)](http://localhost:8080/api/products/?query=impresora) - `http://localhost:8080/api/products/?query=impresora` - Método: `GET`.
+- [5 Productos, Primera Página, Orden Ascendente](http://localhost:8080/api/products/?limit=5&page=1&sort=asc) - `http://localhost:8080/api/products/?limit=5&page=1&sort=asc` - Método: `GET`.
+- [5 Productos, Segunda Página, Orden Descendente](http://localhost:8080/api/products/?limit=5&page=2&sort=desc) - `http://localhost:8080/api/products/?limit=5&page=2&sort=desc` - Método: `GET`.
+- [Buscar "teclado", Orden Ascendente](http://localhost:8080/api/products/?query=teclado&sort=asc) - `http://localhost:8080/api/products/?query=teclado&sort=asc` - Método: `GET`.
+- [Buscar "teclado", Orden Descendente](http://localhost:8080/api/products/?query=teclado&sort=desc) - `http://localhost:8080/api/products/?query=teclado&sort=desc` - Método: `GET`.
+- [Buscar por Categoría: Electrónicos](http://localhost:8080/api/products/?query=categoria:Electrónicos) - `http://localhost:8080/api/products/?query=categoria:Electrónicos` - Método: `GET`.
+- [Buscar Productos Disponibles](http://localhost:8080/api/products/?query=disponible:true) - `http://localhost:8080/api/products/?query=disponible:true` - Método: `GET`.
+
+### URLs de Prueba para API de Carritos
+
+- [Crear un nuevo carrito](http://localhost:8080/api/carts) - `http://localhost:8080/api/carts` - Método: `POST`.
+- [Ver todos los carritos](http://localhost:8080/api/carts) - `http://localhost:8080/api/carts` - Método: `GET`.
+- [Listar productos en un carrito por ID de carrito](http://localhost:8080/api/carts/:cid) - `http://localhost:8080/api/carts/:cid` - Método: `GET`.
+- [Agregar un producto a un carrito](http://localhost:8080/api/carts/:cid/product/:pid) - `http://localhost:8080/api/carts/:cid/product/:pid` - Método: `POST`.
+- [Actualizar el carrito con un arreglo de productos](http://localhost:8080/api/carts/:cid) - `http://localhost:8080/api/carts/:cid` - Método: `PUT`.
+- [Actualizar la cantidad de un producto específico en el carrito](http://localhost:8080/api/carts/:cid/product/:pid) - `http://localhost:8080/api/carts/:cid/products/:pid` - Método: `PUT`.
+- [Eliminar un producto de un carrito](http://localhost:8080/api/carts/:cid/product/:pid) - `http://localhost:8080/api/carts/:cid/product/:pid` - Método: `DELETE`.
+- [Eliminar un carrito por ID](http://localhost:8080/api/carts/:cid) - `http://localhost:8080/api/carts/:cid` - Método: `DELETE`.
+
+### URLs de Prueba para Web de Productos
+
+- [Muestra todos los productos con paginación](http://localhost:8080/products) - `http://localhost:8080/products` - Método: `GET`.
+- [Primera Página (default limit 10)](http://localhost:8080/products?page=1) - `http://localhost:8080/products?page=1`
+- [Segunda Página (default limit 10)](http://localhost:8080/products?page=2) - `http://localhost:8080/products?page=2`
+- [Limitar a 5 Productos](http://localhost:8080/products?limit=5) - `http://localhost:8080/products?limit=5`
+- [Limitar a 20 Productos](http://localhost:8080/products?limit=20) - `http://localhost:8080/products?limit=20`
+- [Orden Ascendente por Precio](http://localhost:8080/products?sort=asc) - `http://localhost:8080/products?sort=asc`
+- [Orden Descendente por Precio](http://localhost:8080/products?sort=desc) - `http://localhost:8080/products?sort=desc`
+- [Buscar "impresora" (Ejemplo de query)](http://localhost:8080/products?query=impresora) - `http://localhost:8080/products?query=impresora`
+- [5 Productos, Primera Página, Orden Ascendente](http://localhost:8080/products?limit=5&page=1&sort=asc) - `http://localhost:8080/products?limit=5&page=1&sort=asc`
+- [5 Productos, Segunda Página, Orden Descendente](http://localhost:8080/products?limit=5&page=2&sort=desc) - `http://localhost:8080/products?limit=5&page=2&sort=desc`
+- [Buscar "teclado", Orden Ascendente](http://localhost:8080/products?query=teclado&sort=asc) - `http://localhost:8080/products?query=teclado&sort=asc`
+- [Buscar "teclado", Orden Descendente](http://localhost:8080/products?query=teclado&sort=desc) - `http://localhost:8080/products?query=teclado&sort=desc`
+- [Buscar por Categoría: Electrónicos](http://localhost:8080/products?query=categoria:Electrónicos&limit=0) - `http://localhost:8080/products?query=categoria:Electrónicos&limit=0`
+- [Buscar Productos Disponibles](http://localhost:8080/products?query=disponible:true&limit=25) - `http://localhost:8080/products?query=disponible:true&limit=25`
+
+### URLs de Prueba para Web de Carritos
+
+- [Vista para visualizar todos los carritos](http://localhost:8080/carts) - `http://localhost:8080/carts` - Método: `GET`.
+- [Vista para visualizar un carrito específico](http://localhost:8080/carts/:cid) - `http://localhost:8080/carts/:cid` - Método: `GET`.

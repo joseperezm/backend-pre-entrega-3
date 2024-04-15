@@ -38,17 +38,14 @@ const deleteProduct = (id) => {
 }
 
 document.getElementById("btnSend").addEventListener("click", (event) => {
-    event.preventDefault(); // Prevenir el envío por defecto del formulario
+    event.preventDefault();
     addProduct();
 });
 
 const addProduct = () => {
-    // Selecciona el formulario usando su clase o id
     const form = document.querySelector('.texto-formulario');
 
-    // Verifica si el formulario es válido
     if (form.checkValidity() === true) {
-        // Construye el objeto del producto solo si el formulario es válido
         const product = {
             title: document.getElementById("title").value,
             description: document.getElementById("description").value,
@@ -60,22 +57,17 @@ const addProduct = () => {
             status: document.getElementById("status").value === "true"
         };
 
-        // El formulario es válido, puedes enviar los datos
         socket.emit("addProduct", product);
 
-        // Limpia el formulario solo después de enviar los datos
-        form.reset(); // Esto restablece los valores de los campos a sus valores predeterminados
+        form.reset(); 
         
-        // Elimina la clase 'was-validated' y la clase 'is-invalid' de todos los elementos del formulario
         form.classList.remove('was-validated');
         Array.from(form.querySelectorAll('.form-control')).forEach((input) => {
             input.classList.remove('is-invalid');
         });
 
-        // Restablece manualmente el estado seleccionado de elementos como 'select' si es necesario
-        document.getElementById("status").value = "true"; // Ejemplo para restablecer el select
+        document.getElementById("status").value = "true"; 
     } else {
-        // Añade la clase was-validated al formulario para que se muestren los feedbacks
         form.classList.add('was-validated');
     }
 };

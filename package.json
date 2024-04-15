@@ -1,12 +1,12 @@
 {
   "name": "proyecto_backend_coderhouse_jose_perez_merino",
   "version": "1.0.0",
-  "description": "Pre-Entrega nro 2 Coderhouse",
+  "description": "Pre-Entrega nro 3 Coderhouse",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/app.js --mode desarrollo",
-    "start": "node src/app.js --mode produccion"
+    "dev": "nodemon src/app.js --mode development",
+    "start": "node src/app.js --mode production"
   },
   "keywords": [],
   "author": "",

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const configObject = require("./config/config.js");
 const {MONGODB_URI} = configObject;
 
-class BaseDatos {
+class DataBase {
     static #instancia; 
 
     constructor(){
@@ -15,10 +15,10 @@ class BaseDatos {
             return this.#instancia;
         }
 
-        this.#instancia = new BaseDatos();
+        this.#instancia = new DataBase();
         console.log("Conexión exitosa a Atlas.com");
         return this.#instancia;
     }
 }
 
-module.exports = BaseDatos.getInstancia();
+module.exports = DataBase.getInstancia();
