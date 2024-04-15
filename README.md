@@ -1,35 +1,45 @@
-# WIP!
 # Tercera pre entrega
-# Mejorando la arquitectura del servidor
+
+## wip
+
+## Mejorando la arquitectura del servidor
 
 ## Objetivos generales
+
 - Profesionalizar el servidor
 
 ## Objetivos específicos
+
 - Aplicar una arquitectura profesional para nuestro servidor.
 - Aplicar prácticas como patrones de diseño, mailing, variables de entorno, etc.
 
 ## Entregables
 
 ### Modificación de la capa de persistencia
+
 - Modificar nuestra capa de persistencia para aplicar los conceptos de Factory (opcional), DAO y DTO.
 
 ### Implementación de Factory y DAO
+
 - El DAO seleccionado (por un parámetro en línea de comandos como lo hicimos anteriormente) será devuelto por una Factory para que la capa de negocio opere con él. (Factory puede ser opcional).
 
 ### Patrón Repository
+
 - Implementar el patrón Repository para trabajar con el DAO en la lógica de negocio.
 
 ### Modificación de la ruta /current
+
 - Para evitar enviar información sensible, enviar un DTO del usuario sólo con la información necesaria.
 
 ### Middleware para sistema de autorización
+
 - Realizar un middleware que pueda trabajar en conjunto con la estrategia "current" para hacer un sistema de autorización y delimitar el acceso a dichos endpoints:
   - Sólo el administrador puede crear, actualizar y eliminar productos.
   - Sólo el usuario puede enviar mensajes al chat.
   - Sólo el usuario puede agregar productos a su carrito.
 
 ### Modelo Ticket
+
 - Crear un modelo Ticket el cual contará con todas las formalizaciones de la compra. Este contará con los campos:
   - Id (autogenerado por mongo)
   - code: String debe autogenerarse y ser único
@@ -38,17 +48,20 @@
   - purchaser: String, contendrá el correo del usuario asociado al carrito.
 
 ### Ruta de compra en el router de carts
+
 - Implementar, en el router de carts, la ruta `/:cid/purchase`, la cual permitirá finalizar el proceso de compra de dicho carrito.
   - La compra debe corroborar el stock del producto al momento de finalizarse.
   - Si el producto tiene suficiente stock para la cantidad indicada en el producto del carrito, entonces restarlo del stock del producto y continuar.
   - Si el producto no tiene suficiente stock para la cantidad indicada en el producto del carrito, entonces no agregar el producto al proceso de compra.
 
 ### Servicio de Tickets
+
 - Al final, utilizar el servicio de Tickets para poder generar un ticket con los datos de la compra.
 - En caso de existir una compra no completada, devolver el arreglo con los ids de los productos que no pudieron procesarse.
 - Una vez finalizada la compra, el carrito asociado al usuario que compró deberá contener sólo los productos que no pudieron comprarse. Es decir, se filtran los que sí se compraron y se quedan aquellos que no tenían disponibilidad.
 
 ### Checklist entrega
+
 - Orden, mejoras, correcciones, prolijidad y testing:
   - Deberán presentar un proyecto organizado en sus respectivos archivos y carpetas.
   - Los nombres de los archivos deben ser coherentes con su contenido.
@@ -59,19 +72,19 @@
   - Deberán garantizar que cada bad request de un usuario tenga su mensaje de error. En esta entrega ya deberían tener atajados la mayor cantidad posible de casos de errores. Si como usuario envío un ID inexistente por POSTMAN automáticamente me tienen que informar que estoy cometiendo un error. Esto ya lo hicieron en las entregas anteriores, lo dejo a modo de aclaración por si alguno aún no realizo las validaciones para esos errores.
   - Se revisará que se hayan agregado las correcciones realizadas en entregas anteriores (esto es fundamental porque hay varios casos donde no corrigen lo marcado en las devoluciones y continúan arrastrando errores entrega a entrega, recuerden que esta entrega lleva una calificación).
   - El alumno deberá testear su proyecto de punta a punta con el fin de evitar errores de sintaxis o irregularidades. En caso de no lograr solucionar los errores, deberán comunicarlo en el mensaje del espacio de entrega o por mensaje privado como prueba fehaciente de que testearon su trabajo.
-- Arquitectura: El proyecto se encuentra separado por capas	
-- Persistencia: El proyecto cuenta con DAO de archivos y DAO de MongoDB	
-- Seguridad: Los endpoints se encuentran protegidos por roles	
-- Proceso de compra: 
+- Arquitectura: El proyecto se encuentra separado por capas
+- Persistencia: El proyecto cuenta con DAO de archivos y DAO de MongoDB
+- Seguridad: Los endpoints se encuentran protegidos por roles
+- Proceso de compra:
   - El carrito sólo compra los productos en stock
   - El ticket se genera con los datos de compra
 - Seguridad:
   - Envía correos.
   - Envía SMS
 
-# Testing
-#
-### Recuerda reemplazar :id, :cid, y :pid con los identificadores apropiados cuando utilices estas URLs.
+## Testing
+
+### Recuerda reemplazar :id, :cid, y :pid con los identificadores apropiados cuando utilices estas URLs
 
 ### URLs de Prueba para API de Productos
 
@@ -107,7 +120,7 @@
 
 ### URLs de Prueba para Web de Productos
 
-- [Muestra todos los productos con paginación](http://localhost:8080/products) - `http://localhost:8080/products` - Método: `GET`.
+- [Muestra todos los productos con paginación](http://localhost:8080/products) - `http://localhost:8080/products`
 - [Primera Página (default limit 10)](http://localhost:8080/products?page=1) - `http://localhost:8080/products?page=1`
 - [Segunda Página (default limit 10)](http://localhost:8080/products?page=2) - `http://localhost:8080/products?page=2`
 - [Limitar a 5 Productos](http://localhost:8080/products?limit=5) - `http://localhost:8080/products?limit=5`
