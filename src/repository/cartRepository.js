@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const { CastError } = require('mongoose').Error;
-const Cart = require('../models/carts-mongoose'); 
-const Product = require('../models/products-mongoose'); 
+const Cart = require('../dao/models/carts-mongoose');
+const Product = require('../dao/models/products-mongoose');
 
-class CartManager {
+class CartRepository {
     constructor() {}
 
     async createCart() {
@@ -12,7 +12,7 @@ class CartManager {
             await cart.save();
             return cart;
         } catch (error) {
-            console.error('Error creando el carrito:', error);
+            console.error('Error creating the cart:', error);
             throw error;
         }
     }
@@ -21,39 +21,37 @@ class CartManager {
         try {
             const cart = await Cart.findById(cartId);
             if (!cart) {
-                console.log('Carrito no encontrado');
-                return { success: false, message: 'Carrito no encontrado', cart: null };
+                console.log('Cart not found');
+                return { success: false, message: 'Cart not found', cart: null };
             }
-    
+
             const product = await Product.findById(productId);
             if (!product) {
-                console.log('Producto no encontrado');
-                return { success: false, message: 'Producto no encontrado', cart: null };
+                console.log('Product not found');
+                return { success: false, message: 'Product not found', cart: null };
             }
-    
+
             const existingProductIndex = cart.products.findIndex(item => item.productId.equals(productId));
-    
+
             if (existingProductIndex >= 0) {
                 cart.products[existingProductIndex].quantity += quantity;
             } else {
                 cart.products.push({ productId, quantity });
             }
-    
-            await cart.save(); 
-    
-            return { success: true, message: 'Producto agregado al carrito correctamente', cart: cart };
+
+            await cart.save();
+            return { success: true, message: 'Product added to cart successfully', cart: cart };
         } catch (error) {
             if (error instanceof CastError) {
-                console.error('ID incorrecto:', error);
-                return { success: false, message: 'ID incorrecto de carrito o producto', cart: null };
+                console.error('Incorrect ID:', error);
+                return { success: false, message: 'Incorrect cart or product ID', cart: null };
             } else {
-                console.error('Error añadiendo producto al carrito:', error);
+                console.error('Error adding product to cart:', error);
                 throw error;
             }
         }
     }
-       
-    
+
     async getAllCarts() {
         try {
             const carts = await Cart.find(); 
@@ -62,23 +60,23 @@ class CartManager {
             console.error('Error obteniendo todos los carritos:', error);
             throw error;
         }
-    }    
+    } 
 
     async getCart(cartId) {
         try {
             const cart = await Cart.findById(cartId).populate('products.productId');
             if (!cart) {
-                console.log('Carrito no encontrado');
+                console.log('Cart not found');
                 return null;
             }
             return cart;
         } catch (error) {
             if (error instanceof CastError && error.path === '_id') {
-                console.error('ID incorrecto de carrito:', error);
+                console.error('Incorrect cart ID:', error);
                 return null; 
             } else {
-                console.error('Error obteniendo el carrito:', error);
-                throw error; 
+                console.error('Error getting the cart:', error);
+                throw error;
             }
         }
     }
@@ -87,132 +85,121 @@ class CartManager {
         try {
             const cart = await Cart.findById(cartId);
             if (!cart) {
-                console.log('Carrito no encontrado');
-                return false; 
+                console.log('Cart not found');
+                return false;
             }
-            
-            await cart.deleteOne(); 
-            return true; 
+
+            await cart.deleteOne();
+            return true;
         } catch (error) {
             if (error instanceof CastError) {
-                console.error('ID incorrecto:', error);
+                console.error('Incorrect ID:', error);
                 return false;
             } else {
-                console.error('Error eliminando el carrito:', error);
+                console.error('Error deleting the cart:', error);
                 throw error;
             }
         }
-    }     
+    }
 
     async deleteProductFromCart(cartId, productId) {
         try {
             const cart = await Cart.findById(cartId);
             if (!cart) {
-                console.log('Carrito no encontrado');
-                return { success: false, message: 'Carrito no encontrado' };
+                console.log('Cart not found');
+                return { success: false, message: 'Cart not found' };
             }
-    
+
             const productIndex = cart.products.findIndex(product => product.productId.equals(productId));
-    
+
             if (productIndex !== -1) {
                 if (cart.products[productIndex].quantity > 1) {
                     cart.products[productIndex].quantity -= 1;
                 } else {
                     cart.products.splice(productIndex, 1);
                 }
-    
-                await cart.save(); 
-    
-                return {
-                    success: true,
-                    message: 'Producto eliminado del carrito correctamente',
-                    cart: cart
-                };
+
+                await cart.save();
+                return { success: true, message: 'Product removed from cart successfully', cart: cart };
             } else {
-                return {
-                    success: false,
-                    message: 'Producto no encontrado en el carrito',
-                    cart: cart
-                };
+                return { success: false, message: 'Product not found in the cart', cart: cart };
             }
         } catch (error) {
             if (error instanceof CastError) {
-                console.error('ID incorrecto:', error);
-                return { success: false, message: 'Carrito no encontrado' };
+                console.error('Incorrect ID:', error);
+                return { success: false, message: 'Cart not found' };
             } else {
-                console.error('Error eliminando el producto del carrito:', error);
+                console.error('Error removing product from cart:', error);
                 throw error;
             }
         }
     }
-    
+
     async updateProductQuantity(cartId, productId, quantity) {
-        const cart = await this.getCart(cartId); 
+        const cart = await this.getCart(cartId);
         if (!cart) {
-            return { success: false, message: "Carrito no encontrado" };
+            return { success: false, message: "Cart not found" };
         }
-    
+
         const productIndex = cart.products.findIndex(p => p.productId.equals(productId));
         if (productIndex === -1) {
-            return { success: false, message: "Producto no encontrado en el carrito" };
+            return { success: false, message: "Product not found in the cart" };
         }
-    
+
         if (quantity <= 0) {
-            cart.products.splice(productIndex, 1); 
+            cart.products.splice(productIndex, 1);
         } else {
-            cart.products[productIndex].quantity = quantity; 
+            cart.products[productIndex].quantity = quantity;
         }
-    
+
         await cart.save();
         return { success: true, cart: cart };
     }
-    
+
     async updateCartProducts(cartId, products) {
         try {
             const cart = await Cart.findById(cartId);
             if (!cart) {
-                return { success: false, message: "Carrito no encontrado" };
+                return { success: false, message: "Cart not found" };
             }
-    
+
             const updatedProducts = products.map(product => ({
                 productId: new mongoose.Types.ObjectId(product.productId),
                 quantity: Number(product.quantity)
             }));
-    
-            cart.products = updatedProducts;c
-    
+
+            cart.products = updatedProducts;
+
             await cart.save();
             return { success: true, cart: cart };
         } catch (error) {
-            console.error("Error al actualizar el carrito con nuevos productos", error);
+            console.error("Error updating the cart with new products", error);
             throw error;
         }
     }
-    
+
     async emptyCart(cartId) {
         try {
             const cart = await Cart.findById(cartId);
             if (!cart) {
-                console.log('Carrito no encontrado');
-                return { success: false, message: 'Carrito no encontrado' };
+                console.log('Cart not found');
+                return { success: false, message: 'Cart not found' };
             }
-    
+
             cart.products = [];
-    
+
             await cart.save();
-    
-            return { success: true, message: 'Carrito vaciado correctamente', cart: cart };
+            return { success: true, message: 'Cart emptied successfully', cart: cart };
         } catch (error) {
             if (error instanceof CastError) {
-                console.error('ID incorrecto:', error);
-                return { success: false, message: 'ID incorrecto de carrito' };
+                console.error('Incorrect cart ID:', error);
+                return { success: false, message: 'Incorrect cart ID' };
             } else {
-                console.error('Error vaciando el carrito:', error);
+                console.error('Error emptying the cart:', error);
                 throw error;
             }
         }
-    }    
-          
+    }
 }
 
-module.exports = CartManager;
+module.exports = CartRepository;
