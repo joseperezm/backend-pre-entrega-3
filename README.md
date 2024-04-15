@@ -69,7 +69,7 @@
   - Envía correos.
   - Envía SMS
 
-# Testeos
+# Testing
 #
 ### Recuerda reemplazar :id, :cid, y :pid con los identificadores apropiados cuando utilices estas URLs.
 
