@@ -47,3 +47,24 @@
 - Al final, utilizar el servicio de Tickets para poder generar un ticket con los datos de la compra.
 - En caso de existir una compra no completada, devolver el arreglo con los ids de los productos que no pudieron procesarse.
 - Una vez finalizada la compra, el carrito asociado al usuario que compró deberá contener sólo los productos que no pudieron comprarse. Es decir, se filtran los que sí se compraron y se quedan aquellos que no tenían disponibilidad.
+
+### Checklist entrega
+- Orden, mejoras, correcciones, prolijidad y testing:
+- - Deberán presentar un proyecto organizado en sus respectivos archivos y carpetas.
+- - Los nombres de los archivos deben ser coherentes con su contenido.
+- - El código debe ser legible y prolijo. Los nombres de las funciones y métodos deben ser coherentes con su lógica y/o funcionalidad.
+- - Todo el código debe estar en inglés a excepción de los console.log o respuestas en POSTMAN.
+- - Evitar dejar grandes bloques de código comentados si tienen la certeza que no los van a usar en un futuro, ya que le quita prolijidad al trabajo.
+- - Cada respuesta del servidor debe tener su status code correspondiente (los errores NO pueden tener status code 200).
+- - Deberán garantizar que cada bad request de un usuario tenga su mensaje de error. En esta entrega ya deberían tener atajados la mayor cantidad posible de casos de errores. Si como usuario envío un ID inexistente por POSTMAN automáticamente me tienen que informar que estoy cometiendo un error. Esto ya lo hicieron en las entregas anteriores, lo dejo a modo de aclaración por si alguno aún no realizo las validaciones para esos errores.
+- - Se revisará que se hayan agregado las correcciones realizadas en entregas anteriores (esto es fundamental porque hay varios casos donde no corrigen lo marcado en las devoluciones y continúan arrastrando errores entrega a entrega, recuerden que esta entrega lleva una calificación).
+- - El alumno deberá testear su proyecto de punta a punta con el fin de evitar errores de sintaxis o irregularidades. En caso de no lograr solucionar los errores, deberán comunicarlo en el mensaje del espacio de entrega o por mensaje privado como prueba fehaciente de que testearon su trabajo.
+- Arquitectura: El proyecto se encuentra separado por capas	
+- Persistencia: El proyecto cuenta con DAO de archivos y DAO de MongoDB	
+- Seguridad: Los endpoints se encuentran protegidos por roles	
+- Proceso de compra: 
+- - El carrito sólo compra los productos en stock
+- - El ticket se genera con los datos de compra
+- Seguridad:
+- - Envía correos.
+- - Envía SMS
