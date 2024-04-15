@@ -81,28 +81,28 @@ app.use('/api/sessions', sessionsRouter);
 const server = app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
-
+//Se borra esto?
 const ProductManagerFs = require("./dao/fs/productManager-fs")
 const productManagerFs = new ProductManagerFs("./dao/fs/products.json");
-
-const ProductManager = require("./dao/db/productManager.js");
-const productManager = new ProductManager();
+//
+const ProductRepositor = require("./repository/productRepository.js");
+const productRepositor = new ProductRepositor();
 
 const io = socket(server);
 
 io.on("connection", async (socket) => {
     console.log("Nuevo cliente conectado");
 
-    socket.emit("products", await productManager.getProducts());
+    socket.emit("products", await productRepositor.getProducts());
 
     socket.on("deleteProduct", async (id) => {
-        await productManager.deleteProduct(id);
-        io.sockets.emit("products", await productManager.getProducts());
+        await productRepositor.deleteProduct(id);
+        io.sockets.emit("products", await productRepositor.getProducts());
     });
 
     socket.on("addProduct", async (producto) => {
-        await productManager.addProduct(producto);
-        io.sockets.emit("products", await productManager.getProducts());
+        await productRepositor.addProduct(producto);
+        io.sockets.emit("products", await productRepositor.getProducts());
     });
 });
 

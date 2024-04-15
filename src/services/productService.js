@@ -1,4 +1,5 @@
-const ProductManager = require("../dao/db/productManager");
+const ProductManager = require("../repository/productRepository");
+//const ProductManager = require("../dao/db/productManager");
 const productManager = new ProductManager();
 
 exports.getProducts = async ({ limit, page, sort, query }) => {

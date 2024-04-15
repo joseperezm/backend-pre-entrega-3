@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 const { CastError } = require('mongoose').Error;
-const Product = require('../models/products-mongoose'); 
+const Product = require('../dao/models/products-mongoose');
 
 Product.schema.plugin(mongoosePaginate);
 
-class ProductManager {
+class ProductRepository {
     constructor() {}
 
     async addProduct(productData) {
@@ -14,7 +14,7 @@ class ProductManager {
             await product.save();
             return product;
         } catch (error) {
-            console.error('Error añadiendo el producto:', error);
+            console.error('Error adding product:', error);
             throw error;
         }
     }
@@ -82,16 +82,16 @@ class ProductManager {
             throw error;
         }
     }
-             
+
     async getProductById(productId) {
         try {
             return await Product.findById(productId);
         } catch (error) {
             if (error instanceof CastError && error.path === '_id') {
-                console.error('ID incorrecto de producto:', error);
+                console.error('Incorrect product ID:', error);
                 return null;
             } else {
-                console.error('Error obteniendo el producto por ID:', error);
+                console.error('Error getting product by ID:', error);
                 throw error;
             }
         }
@@ -102,10 +102,10 @@ class ProductManager {
             return await Product.findByIdAndUpdate(productId, productData, { new: true });
         } catch (error) {
             if (error instanceof CastError && error.path === '_id') {
-                console.error('ID incorrecto de producto:', error);
+                console.error('Incorrect product ID:', error);
                 return null;
             } else {
-                console.error('Error actualizando el producto:', error);
+                console.error('Error updating product:', error);
                 throw error;
             }
         }
@@ -116,14 +116,38 @@ class ProductManager {
             return await Product.findByIdAndDelete(productId);
         } catch (error) {
             if (error instanceof CastError && error.path === '_id') {
-                console.error('ID incorrecto de producto:', error);
+                console.error('Incorrect product ID:', error);
                 return null;
             } else {
-                console.error('Error eliminando el producto:', error);
+                console.error('Error deleting product:', error);
                 throw error;
             }
         }
-    }  
+    }
+
+    createQueryFilter(query) {
+        let queryFilter = {};
+        if (query) {
+            if (query.startsWith("categoria:") || query.startsWith("disponible:")) {
+                const [key, value] = query.split(":");
+                queryFilter[key === "categoria" ? 'category' : 'status'] = value === 'true' || value;
+            } else {
+                queryFilter.$or = [
+                    { title: { $regex: query, $options: 'i' } },
+                    { description: { $regex: query, $options: 'i' } }
+                ];
+            }
+        }
+        return queryFilter;
+    }
+
+    createSortOptions(sort) {
+        let sortOptions = {};
+        if (sort === 'asc' || sort === 'desc') {
+            sortOptions.price = sort === 'asc' ? 1 : -1;
+        }
+        return sortOptions;
+    }
 }
 
-module.exports = ProductManager;
+module.exports = ProductRepository;
