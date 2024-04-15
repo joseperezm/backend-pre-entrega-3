@@ -137,5 +137,5 @@
 
 ### URLs de Prueba para Web de Carritos
 
-- [Vista para visualizar todos los carritos](http://localhost:8080/carts) - `http://localhost:8080/carts` - Método: `GET`.
-- [Vista para visualizar un carrito específico](http://localhost:8080/carts/:cid) - `http://localhost:8080/carts/:cid` - Método: `GET`.
+- [Vista para visualizar todos los carritos](http://localhost:8080/carts) - `http://localhost:8080/carts`
+- [Vista para visualizar un carrito específico](http://localhost:8080/carts/:cid) - `http://localhost:8080/carts/:cid`
