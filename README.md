@@ -2,7 +2,7 @@
 
 ## wip
 
-## Mejorando la arquitectura del servidor
+## Mejorando arquitectura del servidor
 
 ## Objetivos generales
 
