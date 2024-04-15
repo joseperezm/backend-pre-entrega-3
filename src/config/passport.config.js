@@ -1,6 +1,7 @@
 const passport = require("passport");
 const local = require("passport-local");
 const UserModel = require("../dao/models/user-mongoose.js");
+const Cart = require('../dao/models/carts-mongoose');
 const { createHash, isValidPassword } = require("../utils/hashBcrypt.js");
 
 const GitHubStrategy = require('passport-github2').Strategy;
@@ -43,8 +44,11 @@ const initializePassport = () => {
                 role: 'user',
                 password: createHash(password)
             };
-            let result = await UserModel.create(newUser);
-            return done(null, result);
+            newUser = await UserModel.create(newUser);
+            const newCart = await Cart.create({ user: newUser._id });
+            newUser.cart = newCart._id;
+            await newUser.save();
+            return done(null, newUser);
         } catch (error) {
             return done(null, false, req.flash('error', 'Error al crear el usuario...'));
         }
@@ -62,6 +66,12 @@ const initializePassport = () => {
             if (!isValidPassword(password, user)) {
                 return done(null, false, req.flash('error'));
             }
+            let cart = await Cart.findOne({ user: user._id });
+            if (!cart) {
+                cart = await Cart.create({ user: user._id });
+            }
+            user.cart = cart._id;
+            await user.save();
             return done(null, user);
         } catch (error) {
             return done(null, false, req.flash('error'));
@@ -93,13 +103,19 @@ const initializePassport = () => {
                     email: profile._json.id,
                     role: 'user',
                     password: ""
-                }
-                let result = await UserModel.create(newUser);
-                done(null, result)
+                };
+                user = await UserModel.create(newUser);
+                const newCart = await Cart.create({ user: user._id });
+                user.cart = newCart._id;
+                await user.save();
+                done(null, user);
             } else {
+                let cart = await Cart.findOne({ user: user._id });
+                if (!cart) {
+                    cart = await Cart.create({ user: user._id });
+                }
                 done(null, user);
             }
-
         } catch (error) {
             return done(error);
         }
@@ -128,8 +144,16 @@ const initializePassport = () => {
                     });
 
                     user = await newUser.save();
+                    const newCart = await Cart.create({ user: user._id });
+                    user.cart = newCart._id;
+                    await user.save();
+                } else {
+                    let cart = await Cart.findOne({ user: user._id });
+                    if (!cart) {
+                        cart = await Cart.create({ user: user._id });
+                    }
                 }
-
+    
                 done(null, user);
             } catch (error) {
                 done(error);
