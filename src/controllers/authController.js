@@ -1,4 +1,5 @@
 const passport = require('passport');
+const createUserDto = require('../dto/userDto');
 
 exports.registrationInstructions = (req, res) => {
     const registrationInstructions = {
@@ -198,16 +199,11 @@ exports.googleCallback = (req, res, next) => {
 
 exports.currentSession = (req, res) => {
     if (req.user) {
+        const userDto = createUserDto(req.user);
+
         res.json({
             success: true,
-            user: {
-                id: req.user.id,
-                first_name: req.user.first_name,
-                last_name: req.user.last_name,
-                email: req.user.email,
-                age: req.user.age,
-                role: req.user.role
-            }
+            user: userDto
         });
     } else {
         res.status(401).json({
