@@ -129,19 +129,26 @@ exports.deleteProductFromCart = async (req, res) => {
 
 exports.finalizePurchase = async (req, res) => {
     const cartId = req.params.cid;
+    const userEmail = req.user.email;
     try {
-        const userEmail = req.user.email;
-
         const result = await cartService.finalizePurchase(cartId, userEmail);
-        
-        res.status(200).json({
-            success: true,
-            message: "Compra finalizada con éxito",
-            totalAmount: result.totalAmount,
-            ticketId: result.ticketId
-        });
+        if (result.failedProducts.length > 0) {
+            res.status(206).json({
+                success: true,
+                message: "Compra parcialmente exitosa",
+                totalAmount: result.totalAmount,
+                ticketId: result.ticketId,
+                failedProducts: result.failedProducts
+            });
+        } else {
+            res.status(200).json({
+                success: true,
+                message: "Compra finalizada con éxito",
+                totalAmount: result.totalAmount,
+                ticketId: result.ticketId
+            });
+        }
     } catch (error) {
-        console.error(error);
         res.status(500).json({ success: false, message: error.message });
     }
 };

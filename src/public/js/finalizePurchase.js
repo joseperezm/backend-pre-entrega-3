@@ -7,21 +7,26 @@ document.getElementById('finalize-purchase').addEventListener('click', function(
             'Content-Type': 'application/json',
         }
     })
-    .then(response => {
-        if (response.ok) {
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
             alert('Compra finalizada con éxito!');
+            if (data.failedProducts && data.failedProducts.length > 0) {
+                // Crear un mensaje HTML con los productos que fallaron
+                let failedMessage = 'Algunos productos no pudieron ser comprados debido a falta de stock: ';
+                data.failedProducts.forEach(prod => {
+                    failedMessage += `${prod.title} ID:${prod._id} / `;
+                });
+                failedMessage;
+                alert(failedMessage);
+            }
             window.location.href = '/products';
         } else {
-            return response.json();
-        }
-    })
-    .then(data => {
-        if (data) {
             alert(data.message);
         }
     })
     .catch(error => {
-        console.error(error);
+        console.error('Error al procesar la compra:', error);
         alert('Error al finalizar la compra, por favor intente nuevamente.');
     });
 });

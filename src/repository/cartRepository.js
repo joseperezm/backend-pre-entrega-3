@@ -202,41 +202,51 @@ class CartRepository {
         }
     }
 
-async finalizePurchase(cartId, userEmail) {
-    const cart = await this.getCart(cartId);
-    if (!cart) {
-        throw new Error('Carrito no encontrado');
-    }
-
-    let totalAmount = 0;
-    const updates = [];
-
-    for (const item of cart.products) {
-        const product = await Product.findById(item.productId);
-        if (product.stock >= item.quantity) {
-            product.stock -= item.quantity;
-            totalAmount += item.quantity * product.price;
-            updates.push(product.save());
-        } else {
-            throw new Error(`No hay suficiente stock para el producto ${product.title}`);
+    async finalizePurchase(cartId, userEmail) {
+        const cart = await this.getCart(cartId);
+        if (!cart) {
+            throw new Error('Carrito no encontrado');
         }
+    
+        let totalAmount = 0;
+        let failedProducts = [];
+        const updates = [];
+        let newTicket = null;
+    
+        for (const item of cart.products) {
+            const product = await Product.findById(item.productId);
+            if (product && product.stock >= item.quantity) {
+                product.stock -= item.quantity;
+                totalAmount += item.quantity * product.price;
+                updates.push(product.save());
+            } else {
+                failedProducts.push({ id: item.productId.toString(), title: product.title, _id: product._id });
+            }
+        }
+    
+        await Promise.all(updates);
+    
+        if (totalAmount > 0) {
+            newTicket = new Ticket({
+                code: Math.random().toString(36).substr(2, 9),
+                purchase_datetime: new Date(),
+                amount: totalAmount,
+                purchaser: userEmail
+            });
+            await newTicket.save();
+        }
+    
+        cart.products = cart.products.filter(item => failedProducts.some(failedProd => failedProd.id === item.productId.toString()));
+        await cart.save();
+    
+        return {
+            totalAmount,
+            failedProducts,
+            message: newTicket ? "Compra finalizada con éxito" : "Compra parcialmente exitosa",
+            ticketId: newTicket ? newTicket._id : null
+        };
     }
-
-    await Promise.all(updates);
-
-    const newTicket = new Ticket({
-        code: Math.random().toString(36).substr(2, 9),
-        purchase_datetime: new Date(),
-        amount: totalAmount,
-        purchaser: userEmail
-    });
-
-    await newTicket.save();
-
-    await this.emptyCart(cartId);
-
-    return { totalAmount, message: "Compra finalizada con éxito", ticketId: newTicket._id };
-}
+    
 }
 
 module.exports = CartRepository;
