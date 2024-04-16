@@ -1,7 +1,5 @@
 # Tercera pre entrega
 
-## wip
-
 ## Mejorando arquitectura del servidor
 
 ## Objetivos generales
