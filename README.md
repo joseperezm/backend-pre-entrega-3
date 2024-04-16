@@ -119,7 +119,7 @@
 - [Actualizar la cantidad de un producto específico en el carrito](http://localhost:8080/api/carts/:cid/product/:pid) - `http://localhost:8080/api/carts/:cid/products/:pid` - Método: `PUT`.
 - [Eliminar un producto de un carrito](http://localhost:8080/api/carts/:cid/product/:pid) - `http://localhost:8080/api/carts/:cid/product/:pid` - Método: `DELETE`.
 - [Eliminar un carrito por ID](http://localhost:8080/api/carts/:cid) - `http://localhost:8080/api/carts/:cid` - Método: `DELETE`.
-- [Finalizar la compra de un carrito](http://localhost:8080/api/carts/:cid/purchase) - `http://localhost:8080/api/carts/:cid/purchase` - Método: `POST`. 
+- [Finalizar la compra de un carrito](http://localhost:8080/api/carts/:cid/purchase) - `http://localhost:8080/api/carts/:cid/purchase` - Método: `POST`.
 
 ### URLs de Prueba para Web de Productos
 
@@ -145,8 +145,19 @@
 
 ### URLs de Prueba para Web de Usuario
 
+- [Mostrar Página de Inicio de Sesión](http://localhost:8080/login) - `http://localhost:8080/login`
+- [Mostrar Página de Registro](http://localhost:8080/register) - `http://localhost:8080/register`
 - [Vista perfil de usuario](http://localhost:8080/profile) - `http://localhost:8080/profile`
 
 ### URLs de Prueba para API de Usuario
 
-- [Obtener el usuario actual](http://localhost:8080/api/sessions/current) - `http://localhost:8080/api/sessions/current`
+- [Instrucciones de Registro](http://localhost:8080/api/sessions/register) - `http://localhost:8080/api/sessions/register` - Método: `GET`.
+- [Registro de Usuario](http://localhost:8080/api/sessions/register) - `http://localhost:8080/api/sessions/register` - Método: `POST`.
+- [Instrucciones de Inicio de Sesión](http://localhost:8080/api/sessions/login) - `http://localhost:8080/api/sessions/login` - Método: `GET`.
+- [Inicio de Sesión de Usuario](http://localhost:8080/api/sessions/login) - `http://localhost:8080/api/sessions/login` - Método: `POST`.
+- [Cerrar Sesión de Usuario](http://localhost:8080/api/sessions/logout) - `http://localhost:8080/api/sessions/logout` - Método: `GET`.
+- [Autenticación con GitHub](http://localhost:8080/api/sessions/auth/github) - `http://localhost:8080/api/sessions/auth/github` - Método: `GET`.
+- [Callback de Autenticación con GitHub](http://localhost:8080/api/sessions/auth/github/callback) - `http://localhost:8080/api/sessions/auth/github/callback` - Método: `GET`.
+- [Autenticación con Google](http://localhost:8080/api/sessions/auth/google) - `http://localhost:8080/api/sessions/auth/google` - Método: `GET`.
+- [Callback de Autenticación con Google](http://localhost:8080/api/sessions/auth/google/callback) - `http://localhost:8080/api/sessions/auth/google/callback` - Método: `GET`.
+- [Obtener Sesión Actual](http://localhost:8080/api/sessions/current) - `http://localhost:8080/api/sessions/current` - Método: `GET`.
