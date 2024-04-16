@@ -117,6 +117,7 @@
 - [Actualizar la cantidad de un producto específico en el carrito](http://localhost:8080/api/carts/:cid/product/:pid) - `http://localhost:8080/api/carts/:cid/products/:pid` - Método: `PUT`.
 - [Eliminar un producto de un carrito](http://localhost:8080/api/carts/:cid/product/:pid) - `http://localhost:8080/api/carts/:cid/product/:pid` - Método: `DELETE`.
 - [Eliminar un carrito por ID](http://localhost:8080/api/carts/:cid) - `http://localhost:8080/api/carts/:cid` - Método: `DELETE`.
+- [Finalizar la compra de un carrito](http://localhost:8080/api/carts/:cid/purchase) - `http://localhost:8080/api/carts/:cid/purchase` - Método: `POST`. 
 
 ### URLs de Prueba para Web de Productos
 
