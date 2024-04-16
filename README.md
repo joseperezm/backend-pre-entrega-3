@@ -140,3 +140,11 @@
 
 - [Vista para visualizar todos los carritos](http://localhost:8080/carts) - `http://localhost:8080/carts`
 - [Vista para visualizar un carrito específico](http://localhost:8080/carts/:cid) - `http://localhost:8080/carts/:cid`
+
+### URLs de Prueba para Web de Usuario
+
+- [Vista perfil de usuario](http://localhost:8080/profile) - `http://localhost:8080/profile`
+
+### URLs de Prueba para Api de Usuario
+
+- [Obtener el usuario actual](http://localhost:8080/api/sessions/current) - `http://localhost:8080/api/sessions/current`
