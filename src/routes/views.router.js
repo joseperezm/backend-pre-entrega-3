@@ -14,7 +14,7 @@ const redirectIfLoggedIn = require('../middleware/loggedIn.js');
 
 router.get("/", redirectIfNotLoggedIn, (req, res) => res.render("index"));
 router.get("/products", redirectIfNotLoggedIn, productsViewController.index);
-router.get("/carts", redirectIfNotLoggedIn, cartsViewController.showCarts);
+router.get("/carts", authorize('admin'), redirectIfNotLoggedIn, cartsViewController.showCarts);
 router.get("/carts/:cid", redirectIfNotLoggedIn, cartsViewController.showCart);
 
 router.get('/login', redirectIfLoggedIn, authViewController.showLogin);
