@@ -86,6 +86,8 @@
 
 ### Recuerda reemplazar :id, :cid, y :pid con los identificadores apropiados cuando utilices estas URLs
 
+### Recuerda que ahora algunas secciones estas restringidas por rol
+
 ### URLs de Prueba para API de Productos
 
 - [Listar todos los productos](http://localhost:8080/api/products) - `http://localhost:8080/api/products` - Método: `GET`.
@@ -145,6 +147,6 @@
 
 - [Vista perfil de usuario](http://localhost:8080/profile) - `http://localhost:8080/profile`
 
-### URLs de Prueba para Api de Usuario
+### URLs de Prueba para API de Usuario
 
 - [Obtener el usuario actual](http://localhost:8080/api/sessions/current) - `http://localhost:8080/api/sessions/current`
