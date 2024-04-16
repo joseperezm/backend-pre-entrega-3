@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { CastError } = require('mongoose').Error;
 const Cart = require('../dao/models/carts-mongoose');
 const Product = require('../dao/models/products-mongoose');
+const Ticket = require('../dao/models/ticket-mongoose');
 
 class CartRepository {
     constructor() {}
@@ -200,6 +201,42 @@ class CartRepository {
             }
         }
     }
+
+async finalizePurchase(cartId, userEmail) {
+    const cart = await this.getCart(cartId);
+    if (!cart) {
+        throw new Error('Carrito no encontrado');
+    }
+
+    let totalAmount = 0;
+    const updates = [];
+
+    for (const item of cart.products) {
+        const product = await Product.findById(item.productId);
+        if (product.stock >= item.quantity) {
+            product.stock -= item.quantity;
+            totalAmount += item.quantity * product.price;
+            updates.push(product.save());
+        } else {
+            throw new Error(`No hay suficiente stock para el producto ${product.title}`);
+        }
+    }
+
+    await Promise.all(updates);
+
+    const newTicket = new Ticket({
+        code: Math.random().toString(36).substr(2, 9),
+        purchase_datetime: new Date(),
+        amount: totalAmount,
+        purchaser: userEmail
+    });
+
+    await newTicket.save();
+
+    await this.emptyCart(cartId);
+
+    return { totalAmount, message: "Compra finalizada con éxito", ticketId: newTicket._id };
+}
 }
 
 module.exports = CartRepository;

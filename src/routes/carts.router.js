@@ -13,5 +13,6 @@ router.put("/carts/:cid/product/:pid", authorizeApi('user'), redirectIfNotLogged
 router.delete("/carts/:cid", redirectIfNotLoggedInApi, cartsController.emptyCart);
 router.delete("/carts/:cid/delete", redirectIfNotLoggedInApi, cartsController.deleteCart);
 router.delete("/carts/:cid/product/:pid", redirectIfNotLoggedInApi, cartsController.deleteProductFromCart);
+router.post('/carts/:cid/purchase', cartsController.finalizePurchase);
 
 module.exports = router;
