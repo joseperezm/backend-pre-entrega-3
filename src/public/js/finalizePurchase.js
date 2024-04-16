@@ -12,7 +12,6 @@ document.getElementById('finalize-purchase').addEventListener('click', function(
         if (data.success) {
             alert('Compra finalizada con éxito!');
             if (data.failedProducts && data.failedProducts.length > 0) {
-                // Crear un mensaje HTML con los productos que fallaron
                 let failedMessage = 'Algunos productos no pudieron ser comprados debido a falta de stock: ';
                 data.failedProducts.forEach(prod => {
                     failedMessage += `${prod.title} ID:${prod._id} / `;
