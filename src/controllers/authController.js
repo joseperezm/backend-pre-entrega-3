@@ -62,17 +62,19 @@ exports.login = (req, res, next) => {
     const { email, password } = req.body;
 
     if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-        req.session.user = {
+        const user = {
             email,
-            role: 'admin',
             first_name: 'Admin',
             last_name: 'CoderHouse',
-            age: '9999'
-        };
-        console.log('Inicio de sesión exitoso para:', email, 'Rol: admin');
-        req.flash('success', 'Inicio de sesión exitoso para:', email);
+            age: '9999',
+            role: 'admin'
+        };    
+        req.session.user = user;    
+        const userName = `${user.first_name} ${user.last_name}`;
+        console.log(`Inicio de sesión local para usuario: ${userName}`);
+        req.flash('success', `¡Inicio de sesión exitoso para: ${userName}!`);
         return res.redirect('/products');
-    }
+    }    
 
     passport.authenticate('login', (err, user, info) => {
         if (err) {
