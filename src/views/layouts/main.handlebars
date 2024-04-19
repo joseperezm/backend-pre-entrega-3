@@ -43,7 +43,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="/products">Productos</a>
               </li>
-              {{#if (eq role "admin")}}
+              {{#if (eq user.role "admin")}}
                 <li class="nav-item">
                   <a class="nav-link" href="/realtimeproducts">Inventario</a>
                 </li>
@@ -51,7 +51,7 @@
                   <a class="nav-link" href="/carts">Carritos</a>
                 </li>
               {{/if}}
-              {{#if (eq role "user")}}
+              {{#if (eq user.role "user")}}
                 <li class="nav-item">
                   <a class="nav-link" href="/carts/{{cartId}}">Mi Carrito</a>
                 </li>

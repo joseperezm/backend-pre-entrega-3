@@ -70,7 +70,7 @@ exports.login = (req, res, next) => {
             age: '9999'
         };
         console.log('Inicio de sesión exitoso para:', email, 'Rol: admin');
-        req.flash('success', '¡Inicio de sesión exitoso!');
+        req.flash('success', 'Inicio de sesión exitoso para:', email);
         return res.redirect('/products');
     }
 
