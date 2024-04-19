@@ -50,39 +50,38 @@ app.use(flash());
 
 app.use(async (req, res, next) => {
     if (req.isAuthenticated()) {
-        // Convierte el documento Mongoose del usuario a un objeto simple
         res.locals.user = req.user.toObject();
 
-        // Hace el rol del usuario accesible globalmente a través de res.locals
         res.locals.role = req.user.role;
 
-        // Busca el usuario en la base de datos para obtener la información actualizada, incluyendo el carrito
         const userWithCart = await UserModel.findById(req.user._id).populate('cart');
         if (userWithCart && userWithCart.cart) {
-            // Hace el ID del carrito accesible globalmente a través de res.locals
             res.locals.cartId = userWithCart.cart._id;
         }
     }
+    if (req.session.user) {
+        req.user = req.session.user;
+        res.locals.user = req.session.user;
+    }
     next();
 });
-
 
 app.use(express.static("./src/public"));
 
 app.engine("handlebars", exphbs.engine({
     helpers: {
         multiply: function (a, b) {
-            return (a * b).toFixed(2); // Multiplica dos números y formatea el resultado a dos decimales
+            return (a * b).toFixed(2);
         },
         totalCart: function (products) {
             let total = 0;
             products.forEach(product => {
-                total += product.quantity * product.productId.price; // Calcula el total del carrito
+                total += product.quantity * product.productId.price;
             });
-            return total.toFixed(2); // Formatea el total a dos decimales
+            return total.toFixed(2);
         },
         eq: function (arg1, arg2) {
-            return arg1 === arg2; // Compara dos valores para igualdad
+            return arg1 === arg2;
         }
     }
 }));
